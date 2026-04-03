@@ -1,498 +1,174 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextGen App - Akses Masa Depan</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJM Control Panel</title>
 
-    <style>
-        /* ==============================
-           MODERN RESET & VARIABLES
-           ============================== */
-        :root {
-            --bg-dark: #03000a;
-            --primary-neon: #00f2fe;
-            --primary-dim: rgba(0, 242, 254, 0.1);
-            --secondary-neon: #4facfe;
-            --wa-green: #25D366;
-            --text-main: #ffffff;
-            --text-muted: #8b9bb4;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --font-main: 'Inter', sans-serif;
-            --font-heading: 'Poppins', sans-serif;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-        
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Mencegah scrollbar muncul karena animasi background */
-            position: relative;
-        }
+<style>
 
-        /* ==============================
-           AURORA BACKGROUND ANIMATION
-           ============================== */
-        .aurora-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            filter: blur(100px);
-            opacity: 0.6;
-        }
+/* ================= GLOBAL ================= */
+body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:#03000a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
 
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            animation: moveBlobs 20s infinite alternate;
-        }
+/* ================= CENTER FIX ================= */
+.wrapper{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:100%;
+}
 
-        .blob-1 {
-            width: 400px; height: 400px;
-            background: var(--secondary-neon);
-            top: -100px; left: -100px;
-            animation-delay: 0s;
-        }
+/* ================= CARD ================= */
+.card{
+    backdrop-filter: blur(25px);
+    background:rgba(255,255,255,0.03);
+    padding:40px;
+    border-radius:30px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
 
-        .blob-2 {
-            width: 350px; height: 350px;
-            background: #ff0055;
-            bottom: -50px; right: -50px;
-            animation-delay: -5s;
-        }
+/* ================= ICON ================= */
+.icon{
+    width:80px;
+    height:80px;
+    margin:0 auto 15px;
+}
 
-        .blob-3 {
-            width: 300px; height: 300px;
-            background: #7928ca;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -10s;
-        }
+.icon img{
+    width:100%;
+    filter:drop-shadow(0 0 10px #00f2fe);
+}
 
-        @keyframes moveBlobs {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 30px) scale(1.1); }
-        }
+/* ================= TITLE ================= */
+h1{
+    font-family:'Poppins',sans-serif;
+    font-size:26px;
+    margin-bottom:10px;
+}
 
-        /* ==============================
-           SUPER GLASS CONTAINER
-           ============================== */
-        .super-glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-radius: 40px;
-            padding: 50px;
-            width: 100%;
-            max-width: 440px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.02);
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+/* ================= INPUT ================= */
+.input{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border-radius:15px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(0,0,0,0.3);
+    color:white;
+}
 
-        /* Hover Effect: Sedikit terangkat */
-        .super-glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.1);
-        }
+/* ================= BUTTON ================= */
+.btn{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border:none;
+    border-radius:50px;
+    background:#00f2fe;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-        /* Glow tipis di bagian atas kartu */
-        .super-glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 40%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-neon), transparent);
-        }
+/* ================= WA BUTTON ================= */
+.btn-wa{
+    margin-top:15px;
+    padding:14px;
+    border-radius:50px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(37,211,102,0.08);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    transition:0.3s;
+}
 
-        /* SQUIRCLE ICON WITH PNG */
-        .icon-pfp-container {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 30px;
-            position: relative;
-            z-index: 2;
-        }
+.btn-wa:hover{
+    background:rgba(37,211,102,0.2);
+    color:#25D366;
+}
 
-        .icon-bg-squircle {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.3);
-            border-radius: 28px; /* Squircle */
-            z-index: 1;
-            border: 1px solid var(--glass-border);
-            box-shadow: inset 0 0 15px rgba(255,255,255,0.02);
-        }
-
-        .user-icon-png {
-            position: absolute;
-            inset: 12px;
-            width: calc(100% - 24px);
-            height: calc(100% - 24px);
-            object-fit: contain;
-            z-index: 2;
-            filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.4));
-        }
-
-        h1 {
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 30px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #ffffff 0%, #b0c0d9 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 35px;
-            line-height: 1.6;
-        }
-
-        /* ==============================
-           MODERN INPUTS (NEUMORPHIC-GLASS)
-           ============================== */
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            font-size: 11px;
-            color: var(--primary-neon);
-            margin-left: 16px;
-            margin-bottom: 6px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .android-input {
-            width: 100%;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 18px;
-            color: white;
-            font-size: 16px;
-            font-family: var(--font-main);
-            transition: 0.3s ease;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .android-input:focus {
-            outline: none;
-            border-color: var(--primary-neon);
-            background: rgba(0,0,0,0.4);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2), 0 0 15px rgba(0, 242, 254, 0.15);
-        }
-
-        .android-input::placeholder { color: rgba(255,255,255,0.2); }
-
-        /* ==============================
-           ULTRA MODERN BUTTONS
-           ============================== */
-        
-        /* Button 1: Filled Neon (Daftar) */
-        .btn-primary {
-            width: 100%;
-            padding: 18px;
-            border-radius: 100px;
-            border: none;
-            background: var(--primary-neon);
-            color: #000;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 242, 254, 0.3);
-        }
-
-        /* Efek Shine saat Hover */
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            transition: 0.5s;
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .btn-primary:hover::after { left: 100%; }
-        .btn-primary:active { transform: translateY(1px) scale(0.98); }
-
-        /* Button 2: Glass WhatsApp (Cara Install) */
-        .btn-glass-wa {
-            width: 100%;
-            padding: 16px;
-            border-radius: 100px;
-            border: 1px solid var(--glass-border);
-            background: rgba(37, 211, 102, 0.03);
-            color: var(--text-main);
-            font-family: var(--font-main);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
-            transition: 0.3s ease;
-        }
-
-        .btn-glass-wa:hover {
-            background: rgba(37, 211, 102, 0.1);
-            border-color: rgba(37, 211, 102, 0.4);
-            color: var(--wa-green);
-        }
-
-        .btn-glass-wa svg { transition: 0.3s ease; }
-        .btn-glass-wa:hover svg { fill: var(--wa-green); transform: rotate(-10deg); }
-
-        /* ==============================
-           MODERN ANDROID TOAST
-           ============================== */
-        .toast-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 1000; }
-        
-        .toast-pill {
-            background: rgba(20, 20, 25, 0.8);
-            backdrop-filter: blur(10px);
-            color: #F4EFF4;
-            padding: 14px 28px;
-            border-radius: 100px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid var(--glass-border);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .toast-pill.show { opacity: 1; transform: translateY(0); }
-        .dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
-        .dot-success { background: var(--wa-green); color: var(--wa-green); }
-        .dot-error { background: #ff4b5c; color: #ff4b5c; }
-
-        /* Loader Spinner */
-        .spinner {
-            width: 22px; height: 22px;
-            border: 3px solid rgba(0,0,0,0.1);
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: none;
-            margin: 0 auto;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-    </style>
+</style>
 </head>
+
 <body>
 
-    <div class="aurora-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
+<div class="wrapper">
 
-    <div class="super-glass-card">
-        <div class="icon-pfp-container">
-            <div class="icon-bg-squircle"></div>
-            <img src="https://image2url.com/r2/default/images/1775052662243-09801d3b-036c-465c-bf89-20603c5906b0.png" alt="App Icon" class="user-icon-png">
-        </div>
+<div class="card">
 
-        <h1>AJM CONTROL PANEL</h1>
-        <p class="desc">Daftar Terlebih Dahulu. <span style="color: #2ecc71;">Trial 3 Hari!</span></p>
+<!-- ICON -->
+<div class="icon">
+<img src="https://image2url.com/r2/default/images/1775052662243-09801d3b-036c-465c-bf89-20603c5906b0.png">
+</div>
 
-        <div class="input-group">
-            <label>Username unik</label>
-            <input type="text" id="username" class="android-input" placeholder="ex: ryan_masadepan">
-        </div>
+<h1>AJM CONTROL PANEL</h1>
+<p>Trial 3 Hari 🚀</p>
 
-        <div class="input-group">
-            <label>Kata Sandi</label>
-            <input type="password" id="password" class="android-input" placeholder="Minimal 6 karakter bercahaya">
-        </div>
+<input id="username" class="input" placeholder="Username">
+<input id="password" type="password" class="input" placeholder="Password">
 
-        <button id="btnDaftar" class="btn-primary">
-            <span id="btnText">Daftar & Instal</span>
-            <div id="loader" class="spinner"></div>
-        </button>
+<button id="btnDaftar" class="btn">Daftar & Install</button>
 
-        <a href="https://whatsapp.com/channel/0029VbC3fLR17En0IWiDqy3V" target="_blank" class="btn-glass-wa">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.512-2.96-2.626-.087-.114-.694-.924-.694-1.762 0-.837.433-1.249.588-1.423.155-.174.337-.218.45-.218.112 0 .225.001.323.005.102.003.238-.039.373.287.141.34.482 1.174.524 1.259.042.085.07.184.014.298-.056.113-.085.184-.169.284-.084.1-.177.223-.253.3-.085.085-.173.177-.074.347.098.171.439.724.943 1.174.647.578 1.192.757 1.362.841.17.085.27.071.369-.043.099-.114.423-.497.536-.666.113-.17.225-.141.38-.085.155.056.985.465 1.155.549.17.084.282.127.324.197.041.07.041.406-.103.811z"/>
-            </svg>
-            Tutorial Instalasi (WA Channel)
-        </a>
-    </div>
+<!-- WHATSAPP BUTTON -->
+<a href="https://whatsapp.com/channel/0029VbC3fLR17En0IWiDqy3V" target="_blank" class="btn-wa">
+📲 Tutorial Install via WhatsApp
+</a>
 
-    <div class="toast-container" id="toastArea"></div>
+</div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+<script type="module">
 
-        // CONFIG FIREBASE (WAJIB GANTI DENGAN PUNYA ANDA)
-        const firebaseConfig = {
-          apiKey: "AIzaSyBSRUZheiN6UQshTHyKvZN0PLZ-pYyF3JE",
-          authDomain: "pengunjung-dbc40.firebaseapp.com",
-          databaseURL: "https://pengunjung-dbc40-default-rtdb.asia-southeast1.firebasedatabase.app",
-          projectId: "pengunjung-dbc40",
-          storageBucket: "pengunjung-dbc40.firebasestorage.app",
-          messagingSenderId: "176191314530",
-          appId: "1:176191314530:web:c3421dfc8c1434aaba0f3b"
-        };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+const app = initializeApp({
+ apiKey: "AIzaSyBSRUZheiN6UQshTHyKvZN0PLZ-pYyF3JE",
+ authDomain: "pengunjung-dbc40.firebaseapp.com",
+ databaseURL: "https://pengunjung-dbc40-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId: "pengunjung-dbc40",
+ storageBucket: "pengunjung-dbc40.firebasestorage.app",
+ messagingSenderId: "176191314530",
+ appId: "1:176191314530:web:c3421dfc8c1434aaba0f3b"
+});
 
-        // DOM Elements
-        const btnDaftar = document.getElementById('btnDaftar');
-        const loader = document.getElementById('loader');
-        const btnText = document.getElementById('btnText');
-        const card = document.querySelector('.super-glass-card');
+const auth = getAuth(app);
 
-        // Efek Interaksi 3D Card (Opsional, matikan jika terasa berat)
-        card.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) translateY(-5px)`;
-        });
+btnDaftar.onclick = async ()=>{
+ let u = username.value;
+ let p = password.value;
 
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-        });
+ if(!u || !p){
+  alert("Isi semua data");
+  return;
+ }
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.5s ease';
-            card.style.transform = `rotateY(0deg) rotateX(0deg) translateY(0deg)`;
-        });
+ await createUserWithEmailAndPassword(auth, u+"@app.com", p);
 
+ window.open("https://www.upload-apk.com/tL0XYxozh7zxt60");
+};
 
-        // Logika Pendaftaran
-        btnDaftar.addEventListener('click', async () => {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
+</script>
 
-            if (!username || !password) {
-                showToast("Dimensi data tidak boleh kosong", "error");
-                return;
-            }
-
-            if (password.length < 6) {
-                showToast("Sandi terlalu lemah (Min. 6)", "error");
-                return;
-            }
-
-            // Manipulasi Username menjadi format email untuk Firebase
-            const fakeEmail = `${username}@nextgen.internal`;
-
-            // UI Loading
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
-            btnDaftar.disabled = true;
-
-            try {
-                // Proses Firebase
-                await createUserWithEmailAndPassword(auth, fakeEmail, password);
-                
-                showToast("Akses Diterima! Mengunduh...", "success");
-                
-                // Memicu Download APK setelah delay
-                setTimeout(() => {
-                    triggerDownload();
-                    // Reset UI
-                    btnText.style.display = 'block';
-                    loader.style.display = 'none';
-                    btnDaftar.disabled = false;
-                    document.getElementById('username').value = '';
-                    document.getElementById('password').value = '';
-                }, 2000);
-
-            } catch (error) {
-                // UI Reset
-                btnText.style.display = 'block';
-                loader.style.display = 'none';
-                btnDaftar.disabled = false;
-
-                let msg = "Akses Ditolak Sisi Sistem";
-                if(error.code === 'auth/email-already-in-use') msg = "Identitas ini sudah aktif";
-                if(error.code === 'auth/invalid-email') msg = "Username mengandung karakter terlarang";
-                
-                showToast(msg, "error");
-            }
-        });
-
-        // FUNGSI NOTIFIKASI TOAST (MODERN PILL)
-        function showToast(message, type) {
-            const area = document.getElementById('toastArea');
-            const toast = document.createElement('div');
-            toast.className = 'toast-pill';
-            const dotClass = type === 'success' ? 'dot-success' : 'dot-error';
-            
-            toast.innerHTML = `<div class="dot ${dotClass}"></div> <span>${message}</span>`;
-            area.appendChild(toast);
-
-            // Animasi Masuk
-            setTimeout(() => toast.classList.add('show'), 10);
-
-            // Hapus otomatis setelah 3.5 detik
-            setTimeout(() => {
-                toast.classList.remove('show');
-                // Hapus element dari DOM setelah animasi keluar selesai
-                setTimeout(() => area.removeChild(toast), 400);
-            }, 3500);
-        }
-
-        // FUNGSI MEMICU DOWNLOAD OTOMATIS APK
-        function triggerDownload() {
-            // --- GANTI DENGAN LINK APK ANDA YANG SEBENARNYA ---
-            const fileUrl = 'https://www.upload-apk.com/tL0XYxozh7zxt60'; 
-            const fileName = 'Ajm Control Panel Trial.apk';
-
-            const link = document.createElement('a');
-            link.href = fileUrl;
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    </script>
 </body>
-  </html>
+</html>
