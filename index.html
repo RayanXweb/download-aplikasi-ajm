@@ -3,171 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AJM Control Panel</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<title>Secure Access</title>
 
 <style>
-
-/* ================= GLOBAL ================= */
-body{
-    margin:0;
-    font-family:'Inter',sans-serif;
-    background:#03000a;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* ================= CENTER FIX ================= */
-.wrapper{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width:100%;
-    height:100%;
+body {
+    height: 100vh;
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-/* ================= CARD ================= */
-.card{
+/* Background animation */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, #00f2ff22, transparent 60%);
+    animation: moveBg 10s linear infinite;
+}
+
+@keyframes moveBg {
+    from { transform: translate(-20%, -20%); }
+    to { transform: translate(0%, 0%); }
+}
+
+.container {
+    position: relative;
+    width: 90%;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px);
-    background:rgba(255,255,255,0.03);
-    padding:40px;
-    border-radius:30px;
-    width:90%;
-    max-width:400px;
-    text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    text-align: center;
+    z-index: 2;
 }
 
-/* ================= ICON ================= */
-.icon{
-    width:80px;
-    height:80px;
-    margin:0 auto 15px;
+.lock {
+    font-size: 55px;
+    animation: pulse 1.2s infinite;
 }
 
-.icon img{
-    width:100%;
-    filter:drop-shadow(0 0 10px #00f2fe);
+@keyframes pulse {
+    0% { transform: scale(1);}
+    50% { transform: scale(1.15);}
+    100% { transform: scale(1);}
 }
 
-/* ================= TITLE ================= */
-h1{
-    font-family:'Poppins',sans-serif;
-    font-size:26px;
-    margin-bottom:10px;
+h1 {
+    margin: 10px 0;
+    color: #ff4d4d;
 }
 
-/* ================= INPUT ================= */
-.input{
-    width:100%;
-    padding:15px;
-    margin:10px 0;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,0.1);
-    background:rgba(0,0,0,0.3);
-    color:white;
+.status {
+    font-size: 13px;
+    opacity: 0.8;
+    height: 20px;
 }
 
-/* ================= BUTTON ================= */
-.btn{
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    border:none;
-    border-radius:50px;
-    background:#00f2fe;
-    color:black;
-    font-weight:bold;
-    cursor:pointer;
+.progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow: hidden;
 }
 
-/* ================= WA BUTTON ================= */
-.btn-wa{
-    margin-top:15px;
-    padding:14px;
-    border-radius:50px;
-    border:1px solid rgba(255,255,255,0.1);
-    background:rgba(37,211,102,0.08);
-    color:white;
-    text-decoration:none;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:8px;
-    transition:0.3s;
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#00f2ff,#4facfe);
+    transition: width 0.3s;
 }
 
-.btn-wa:hover{
-    background:rgba(37,211,102,0.2);
-    color:#25D366;
+.timer {
+    font-size: 40px;
+    margin: 10px 0;
+    color: #00f2ff;
 }
 
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border-radius: 30px;
+    background: linear-gradient(90deg,#00f2ff,#4facfe);
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+.glitch {
+    animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+    0% { transform: translate(1px, -1px); }
+    50% { transform: translate(-1px, 1px); }
+    100% { transform: translate(1px, 1px); }
+}
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<div class="container" id="app">
+    <div class="lock">🔒</div>
+    <h1 id="title">Memverifikasi Akses</h1>
+    <div class="status" id="status">Menghubungi server...</div>
 
-<div class="card">
+    <div class="progress">
+        <div class="progress-bar" id="bar"></div>
+    </div>
 
-<!-- ICON -->
-<div class="icon">
-<img src="https://image2url.com/r2/default/images/1775052662243-09801d3b-036c-465c-bf89-20603c5906b0.png">
+    <div class="timer hidden" id="timer">01:00</div>
+
+    <a href="#" class="btn hidden" id="btn">Upgrade Premium</a>
 </div>
 
-<h1>AJM CONTROL PANEL</h1>
-<p>Trial 3 Hari 🚀</p>
+<script>
+// ================= CONFIG =================
+const redirectURL = "https://join-ajm-control-panel.vercel.app"; // GANTI URL TUJUAN
+// ==========================================
 
-<input id="username" class="input" placeholder="Username">
-<input id="password" type="password" class="input" placeholder="Password">
+// SOUND
+function beep() {
+    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc = ctx.createOscillator();
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+}
 
-<button id="btnDaftar" class="btn">Daftar & Install</button>
+// REDIRECT FUNCTION (ANTI GAGAL)
+function goRedirect() {
+    window.location.href = redirectURL;
 
-<!-- WHATSAPP BUTTON -->
-<a href="https://whatsapp.com/channel/0029VbC3fLR17En0IWiDqy3V" target="_blank" class="btn-wa">
-📲 Tutorial Install via WhatsApp
-</a>
+    // backup redirect
+    setTimeout(() => {
+        window.location.replace(redirectURL);
+    }, 500);
+}
 
-</div>
-</div>
+// STEP SIMULATION
+const steps = [
+    "Menghubungi server...",
+    "Memeriksa lisensi...",
+    "Validasi perangkat...",
+    "Sinkronisasi akun...",
+    "Trial terdeteksi habis!"
+];
 
-<script type="module">
+let stepIndex = 0;
+let progress = 0;
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+const statusEl = document.getElementById("status");
+const bar = document.getElementById("bar");
+const timerEl = document.getElementById("timer");
+const btn = document.getElementById("btn");
+const title = document.getElementById("title");
 
-const app = initializeApp({
- apiKey: "AIzaSyBSRUZheiN6UQshTHyKvZN0PLZ-pYyF3JE",
- authDomain: "pengunjung-dbc40.firebaseapp.com",
- databaseURL: "https://pengunjung-dbc40-default-rtdb.asia-southeast1.firebasedatabase.app",
- projectId: "pengunjung-dbc40",
- storageBucket: "pengunjung-dbc40.firebasestorage.app",
- messagingSenderId: "176191314530",
- appId: "1:176191314530:web:c3421dfc8c1434aaba0f3b"
-});
+function runSteps() {
+    let interval = setInterval(() => {
+        progress += 5;
+        bar.style.width = progress + "%";
 
-const auth = getAuth(app);
+        if (progress % 20 === 0 && stepIndex < steps.length) {
+            statusEl.textContent = steps[stepIndex];
+            stepIndex++;
+            beep();
+        }
 
-btnDaftar.onclick = async ()=>{
- let u = username.value;
- let p = password.value;
+        if (progress >= 100) {
+            clearInterval(interval);
+            startCountdown();
+        }
+    }, 200);
+}
 
- if(!u || !p){
-  alert("Isi semua data");
-  return;
- }
+// COUNTDOWN
+let time = 60;
 
- await createUserWithEmailAndPassword(auth, u+"@app.com", p);
+function startCountdown() {
+    title.textContent = "Akses Ditolak";
+    statusEl.textContent = "Silakan upgrade untuk melanjutkan";
+    timerEl.classList.remove("hidden");
+    btn.classList.remove("hidden");
 
- window.open("https://www.upload-apk.com/tL0XYxozh7zxt60");
+    let countdown = setInterval(() => {
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+
+        timerEl.textContent =
+            (m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+
+        if (time <= 10) {
+            timerEl.style.color = "#ff4d4d";
+            timerEl.classList.add("glitch");
+            beep();
+        }
+
+        if (time <= 0) {
+            clearInterval(countdown);
+
+            document.getElementById("app").style.opacity = "0";
+
+            setTimeout(() => {
+                goRedirect(); // AUTO REDIRECT
+            }, 1000);
+        }
+
+        time--;
+    }, 1000);
+}
+
+// BUTTON REDIRECT
+btn.onclick = function(e) {
+    e.preventDefault();
+    goRedirect();
 };
 
+// START
+runSteps();
 </script>
 
 </body>
